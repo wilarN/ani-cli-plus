@@ -156,7 +156,13 @@ if [ -f $watchedfile ]; then
 else
 	printf "$c_red File $watchedfile does not already exist.\n"
 	sleep 1
-	sudo mkdir $watchedfileDir
+	if [ -d "$watchedfileDir" ]; then
+		continue
+
+	else
+		sudo mkdir $watchedfileDir
+	fi
+
 	sudo touch $watchedfile
 	sudo chmod 777 $watchedfile
 	printf "$c_yellow Created file $watchedfile\n $c_reset"
@@ -452,9 +458,8 @@ while :; do
 
 		l)
 			tput reset
-			cat watched.txt
-			continue
-			;;
+			cat $watchedfile
+			break;;
 		*)
 			die "invalid choice"
 			;;
