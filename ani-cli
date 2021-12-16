@@ -158,6 +158,7 @@ else
 	sleep 1
 	sudo mkdir $watchedfileDir
 	sudo touch $watchedfile
+	sudo chmod 777 $watchedfile
 	printf "$c_yellow Created file $watchedfile\n $c_reset"
 fi
 
@@ -450,6 +451,7 @@ while :; do
 			break;;
 
 		l)
+			tput reset
 			cat watched.txt
 			continue
 			;;
@@ -457,6 +459,8 @@ while :; do
 			die "invalid choice"
 			;;
 	esac
-
+	if [ $watchedfile ]; then
+		sudo echo -e "$selection_id:ep->$episode\n$(cat $watchedfile)" > $watchedfile
+	fi
 	open_episode "$selection_id" "$episode"
 done
