@@ -6,7 +6,8 @@ player_fn="mpv"
 
 prog="ani-cli"
 logfile="${XDG_CACHE_HOME:-$HOME/.cache}/ani-hsts"
-watchedfile="watched.txt"
+watchedfileDir="/usr/share/ani-cli/"
+watchedfile="/usr/share/ani-cli/watched.txt"
 base_url="https://www1.gogoanime.cm"
 
 c_red="\033[1;31m"
@@ -149,13 +150,14 @@ get_search_query () {
 }
 
 # create watched file
-if [ -f watchedfile ]; then
-	printf "$c_yellow File $watchedfile already exists.\n"
-	sleep 1
+if [ -f $watchedfile ]; then
+	continue
+
 else
 	printf "$c_red File $watchedfile does not already exist.\n"
 	sleep 1
-	touch watchedfile
+	sudo mkdir $watchedfileDir
+	sudo touch $watchedfile
 	printf "$c_yellow Created file $watchedfile\n $c_reset"
 fi
 
