@@ -276,10 +276,10 @@ open_episode () {
 	done
 
 	printf "Getting data for episode %d\n" $episode
-	
+
 	# Add to latest log (aka, the $watchedfile)
 	if [ $watchedfile ]; then
-		echo "$selection_id:ep->$episode\n$(cat $watchedfile)" > $watchedfile
+		echo "\n$c_yellow[$c_cyan$selection_id$c_yellow]$c_blue - $c_yellow[${c_red}EP$c_yellow]$c_magenta ->$c_green $episode\n\n$(cat $watchedfile)" > $watchedfile
 	fi
 
 	embedded_video_url=$(get_embedded_video_link "$anime_id" "$episode")
@@ -466,6 +466,10 @@ while :; do
 			printf "$c_cyan[$c_yellow Watch Log $c_cyan]$c_yellow :\n"
 			cat $watchedfile
 			sleep 5
+			break;;
+		cl)
+			tput reset
+			# printf "$c_cyan[$c_yellow Watch Log $c_cyan]$c_yellow :\n"
 			break;;
 		*)
 			die "invalid choice"
