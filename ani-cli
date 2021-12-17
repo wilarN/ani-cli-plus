@@ -18,7 +18,6 @@ c_magenta="\033[1;35m"
 c_cyan="\033[1;36m"
 c_reset="\033[0m"
 
-
 help_text () {
 	while IFS= read line; do
 		printf "%s\n" "$line"
@@ -33,7 +32,6 @@ help_text () {
 	 -v  use VLC as the media player
 	EOF
 }
-
 
 die () {
 	printf "$c_red%s$c_reset\n" "$*" >&2
@@ -436,7 +434,6 @@ while :; do
 			printf "$c_reset"
 			[ "$episode" -eq "$episode" ] 2>/dev/null || die "Invalid number entered"
 			;;
-
 		r)
 			episode=$((episode))
 			;;
@@ -463,7 +460,6 @@ while :; do
 			open_selection
 			continue
 			;;
-
 		q)
 			break;;
 
@@ -484,7 +480,6 @@ while :; do
 			open_selection
 			continue
 			;;
-
 		cl)
 			tput reset
 			if [ -f $watchedfile ]; then
@@ -496,7 +491,7 @@ while :; do
 					printf "$c_yellow[$c_blue File is already empty. $c_yellow]\n"
 					sleep 1
 				fi
-
+				
 			else
 				printf "$c_yellow File does not exist, creating it now.\n"
 				sleep 1
