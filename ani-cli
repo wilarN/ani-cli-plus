@@ -278,10 +278,11 @@ open_episode () {
 	printf "Getting data for episode %d\n" $episode
 
 	# Add to latest log (aka, the $watchedfile)
-	if [ $watchedfile ]; then
-		if [ grep -F $selection_id "$watchedfile" ]; then
-			echo "founddddd"
+	if [ -f $watchedfile ]; then
+		if grep -q -i "$selection_id" $watchedfile; then
+			grep -rl "$selection_id" ./ | xargs sed -i 's/windows/test/g'
 		fi
+		sleep 3
 		echo "$c_yellow[$c_cyan$selection_id$c_yellow]$c_blue - $c_yellow[${c_red}EP$c_yellow]$c_magenta ->$c_green $episode\n$(cat $watchedfile)" > $watchedfile
 	fi
 
