@@ -280,7 +280,8 @@ open_episode () {
 	# Add to latest log (aka, the $watchedfile)
 	if [ -f $watchedfile ]; then
 		if grep -q -i "$selection_id" $watchedfile; then
-			grep -rl "$selection_id" ./ | xargs sed -i 's/windows/test/g'
+			# grep -rl "$selection_id" ./ | xargs sed -i 's/windows/test/g'
+			continue
 		fi
 		sleep 3
 		echo "$c_yellow[$c_cyan$selection_id$c_yellow]$c_blue - $c_yellow[${c_red}EP$c_yellow]$c_magenta ->$c_green $episode\n$(cat $watchedfile)" > $watchedfile
@@ -470,8 +471,19 @@ while :; do
 			tput reset
 			printf "$c_cyan[$c_yellow Latest $c_cyan]$c_yellow :\n${c_magenta}---------------\n"
 			cat $watchedfile
-			sleep 5
-			break;;
+			sleep 4
+
+			tput reset
+			get_search_query ""
+			search_results=$(search_anime "$query")
+			[ -z "$search_results" ] && die "No search results found"
+			anime_selection "$search_results"
+			episode_selection
+			check_input
+			append_history
+			open_selection
+			continue
+			;;
 
 		cl)
 			tput reset
@@ -479,9 +491,10 @@ while :; do
 				if [ -s $watchedfile ]; then
 					truncate -s 0 $watchedfile
 					printf "$c_yellow[$c_blue Cleared log file. $c_yellow]\n"
-					sleep 1
+					sleep 2
 				else
 					printf "$c_yellow[$c_blue File is already empty. $c_yellow]\n"
+					sleep 1
 				fi
 
 			else
@@ -497,12 +510,24 @@ while :; do
 				sudo touch $watchedfile
 				sudo chmod 777 $watchedfile
 				printf "$c_yellow Created file $watchedfile\n $c_reset"
+				sleep 1
 			fi
 
-			break;;
+			tput reset
+			get_search_query ""
+			search_results=$(search_anime "$query")
+			[ -z "$search_results" ] && die "No search results found"
+			anime_selection "$search_results"
+			episode_selection
+			check_input
+			append_history
+			open_selection
+			continue
+			;;
 		*)
 			die "invalid choice"
 			;;
 	esac
 	open_episode "$selection_id" "$episode"
+
 done
