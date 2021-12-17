@@ -276,6 +276,11 @@ open_episode () {
 	done
 
 	printf "Getting data for episode %d\n" $episode
+	
+	# Add to latest log (aka, the $watchedfile)
+	if [ $watchedfile ]; then
+		echo "$selection_id:ep->$episode\n$(cat $watchedfile)" > $watchedfile
+	fi
 
 	embedded_video_url=$(get_embedded_video_link "$anime_id" "$episode")
 	video_url=$(get_links "$embedded_video_url")
@@ -458,14 +463,13 @@ while :; do
 
 		l)
 			tput reset
+			printf "$c_cyan[$c_yellow Watch Log $c_cyan]$c_yellow :\n"
 			cat $watchedfile
+			sleep 5
 			break;;
 		*)
 			die "invalid choice"
 			;;
 	esac
-	if [ $watchedfile ]; then
-		sudo echo -e "$selection_id:ep->$episode\n$(cat $watchedfile)" > $watchedfile
-	fi
 	open_episode "$selection_id" "$episode"
 done
