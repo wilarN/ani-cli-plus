@@ -279,7 +279,10 @@ open_episode () {
 
 	# Add to latest log (aka, the $watchedfile)
 	if [ $watchedfile ]; then
-		echo "\n$c_yellow[$c_cyan$selection_id$c_yellow]$c_blue - $c_yellow[${c_red}EP$c_yellow]$c_magenta ->$c_green $episode\n\n$(cat $watchedfile)" > $watchedfile
+		if [ grep -F $selection_id "$watchedfile" ]; then
+			echo "founddddd"
+		fi
+		echo "$c_yellow[$c_cyan$selection_id$c_yellow]$c_blue - $c_yellow[${c_red}EP$c_yellow]$c_magenta ->$c_green $episode\n$(cat $watchedfile)" > $watchedfile
 	fi
 
 	embedded_video_url=$(get_embedded_video_link "$anime_id" "$episode")
@@ -412,8 +415,8 @@ while :; do
 	printf "$c_blue[${c_cyan}%s$c_blue] $c_magenta%s$c_reset\n" "r" "replay current episode"
 	printf "$c_blue[${c_cyan}%s$c_blue] $c_yellow%s$c_reset\n" "a" "search for another anime"
 	printf "$c_blue[${c_cyan}%s$c_blue] $c_magenta%s$c_reset\n" "h" "search history"
-	printf "$c_blue[${c_cyan}%s$c_blue] $c_red%s$c_reset\n" "q" "exit"
-	printf "$c_blue[${c_cyan}%s$c_blue] $c_cyan%s$c_reset\n\n" "l" "list latest watch log"
+	printf "$c_blue[${c_cyan}%s$c_blue] $c_red%s$c_reset\n\n" "q" "exit"
+	printf "$c_blue[${c_cyan}%s$c_blue] $c_cyan%s$c_reset\n" "l" "list latest watch log"
 	printf "$c_blue[${c_cyan}%s$c_blue] $c_cyan%s$c_reset\n" "cl" "clear watched log file"
 	printf "${c_blue}Enter choice:${c_green} "
 	read choice
