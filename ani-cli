@@ -413,7 +413,8 @@ while :; do
 	printf "$c_blue[${c_cyan}%s$c_blue] $c_yellow%s$c_reset\n" "a" "search for another anime"
 	printf "$c_blue[${c_cyan}%s$c_blue] $c_magenta%s$c_reset\n" "h" "search history"
 	printf "$c_blue[${c_cyan}%s$c_blue] $c_red%s$c_reset\n" "q" "exit"
-	printf "$c_blue[${c_cyan}%s$c_blue] $c_cyan%s$c_reset\n" "l" "list-viewed-episodes"
+	printf "$c_blue[${c_cyan}%s$c_blue] $c_cyan%s$c_reset\n\n" "l" "list latest watch log"
+	printf "$c_blue[${c_cyan}%s$c_blue] $c_cyan%s$c_reset\n" "cl" "clear watched log file"
 	printf "${c_blue}Enter choice:${c_green} "
 	read choice
 	printf "$c_reset"
@@ -463,13 +464,37 @@ while :; do
 
 		l)
 			tput reset
-			printf "$c_cyan[$c_yellow Watch Log $c_cyan]$c_yellow :\n"
+			printf "$c_cyan[$c_yellow Latest $c_cyan]$c_yellow :\n${c_magenta}---------------\n"
 			cat $watchedfile
 			sleep 5
 			break;;
+
 		cl)
 			tput reset
-			# printf "$c_cyan[$c_yellow Watch Log $c_cyan]$c_yellow :\n"
+			if [ -f $watchedfile ]; then
+				if [ -s $watchedfile ]; then
+					truncate -s 0 $watchedfile
+					printf "$c_yellow[$c_blue Cleared log file. $c_yellow]\n"
+					sleep 1
+				else
+					printf "$c_yellow[$c_blue File is already empty. $c_yellow]\n"
+				fi
+
+			else
+				printf "$c_yellow File does not exist, creating it now.\n"
+				sleep 1
+				if [ -d "$watchedfileDir" ]; then
+					continue
+
+				else
+					sudo mkdir $watchedfileDir
+				fi
+
+				sudo touch $watchedfile
+				sudo chmod 777 $watchedfile
+				printf "$c_yellow Created file $watchedfile\n $c_reset"
+			fi
+
 			break;;
 		*)
 			die "invalid choice"
