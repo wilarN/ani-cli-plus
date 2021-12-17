@@ -142,7 +142,8 @@ dep_ch () {
 # get query
 get_search_query () {
 	if [ -z "$*" ]; then
-		printf "$c_green Search Query: "
+		printf "${c_yellow}--------------\n"
+		printf "${c_yellow}[${c_blue}Search Query${c_yellow}]${c_blue}: $c_magenta"
 		read -r query
 	else
 		query=$*
@@ -279,12 +280,11 @@ open_episode () {
 
 	# Add to latest log (aka, the $watchedfile)
 	if [ -f $watchedfile ]; then
-		if grep -q -i "$selection_id" $watchedfile; then
-			# grep -rl "$selection_id" ./ | xargs sed -i 's/windows/test/g'
+		if grep -q $selection_id "$watchedfile"; then
 			continue
 		fi
 		sleep 3
-		echo "$c_yellow[$c_cyan$selection_id$c_yellow]$c_blue - $c_yellow[${c_red}EP$c_yellow]$c_magenta ->$c_green $episode\n$(cat $watchedfile)" > $watchedfile
+		echo "$c_yellow[$c_cyan$selection_id$c_yellow]$c_blue-$c_yellow[${c_red}EP$c_yellow]$c_magenta->$c_green$episode\n$(cat $watchedfile)" > $watchedfile
 	fi
 
 	embedded_video_url=$(get_embedded_video_link "$anime_id" "$episode")
