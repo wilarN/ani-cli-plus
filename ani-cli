@@ -491,7 +491,7 @@ while :; do
 					printf "$c_yellow[$c_blue File is already empty. $c_yellow]\n"
 					sleep 1
 				fi
-				
+
 			else
 				printf "$c_yellow File does not exist, creating it now.\n"
 				sleep 1
