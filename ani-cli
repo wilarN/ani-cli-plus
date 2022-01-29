@@ -43,24 +43,29 @@ err () {
 	printf "$c_red%s$c_reset\n" "$*" >&2
 }
 
+# Make sure that the website is online and that the base_url is correct.
+if curl --output /dev/null --silent --head --fail "$base_url"
+then
+		# Debug Message.
+		# printf "$c_yellow[$c_blue Debug--> URL Found and is online.$c_yellow]\n"
+		continue
+else
+		printf "$c_blue(${c_red}Error->$c_blue) Current animegogo hostURL either outdated(or) is not working correctly.\nEither edit the base_url variable yourself or let me know it's not working on -->$c_yellow ${contact_email}$c_blue.\n\n"
+		die "exit_error -->Url_offline -1."
+fi
+
+
 search_anime () {
 	# get anime name along with its id
 	search=$(printf '%s' "$1" | tr ' ' '-' )
 	titlepattern='<a href="/category/'
 
-	# Make sure that the website is online and that the base_url is correct.
-	if curl --output /dev/null --silent --head --fail "$base_url"
-	then
-	    echo "(Debug msg-->)Current URL Online."
-			curl -s "$base_url//search.html" \
-				-G \
-				-d "keyword=$search" |
-			sed -n -E '
-				s_^[[:space:]]*<a href="/category/([^"]*)" title="([^"]*)".*_\1_p
-				'
-	else
-	    echo "(Error-->)Current URL Not online and(or) is not working correctly.\n Either edit the base_url variable yourself or let me know it's not working on-> $contact_email."
-	fi
+		curl -s "$base_url//search.html" \
+			-G \
+			-d "keyword=$search" |
+		sed -n -E '
+			s_^[[:space:]]*<a href="/category/([^"]*)" title="([^"]*)".*_\1_p
+			'
 }
 
 search_eps () {
