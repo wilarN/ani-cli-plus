@@ -8,7 +8,7 @@ prog="ani-cli"
 logfile="${XDG_CACHE_HOME:-$HOME/.cache}/ani-hsts"
 watchedfileDir="/usr/share/ani-cli/"
 watchedfile="/usr/share/ani-cli/watched.txt"
-base_url="https://www1.gogoanime.pe/"
+base_url="https://gogoanime.fi/"
 contact_email="william.jsson@hotmail.com"
 
 c_red="\033[1;31m"
